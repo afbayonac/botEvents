@@ -2,11 +2,18 @@ var express = require('express')
 var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
+var mongoose = require('mongoose')
+var debug = require('debug')('botevents:database')
 
 var index = require('./routes/index')
 
 var app = express()
 
+// Conection mongodb
+mongoose.connect('mongodb://localhost/evets')
+var mongodb = mongoose.connection
+mongodb.on('error', (e) => debug(`connection error : ${e}`))
+mongodb.once('open', () => debug('connection ok'))
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'))
