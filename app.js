@@ -10,7 +10,7 @@ var index = require('./routes/index')
 var app = express()
 
 // Conection mongodb
-mongoose.connect('mongodb://localhost/evets')
+mongoose.connect('mongodb://localhost/events')
 var mongodb = mongoose.connection
 mongodb.on('error', (e) => debug(`connection error : ${e}`))
 mongodb.once('open', () => debug('connection ok'))

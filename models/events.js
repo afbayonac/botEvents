@@ -23,9 +23,14 @@ var eventsSchema = new Schema({
   url: String
 })
 
-eventsSchema.pre('save', true, function (next, done) {
+eventsSchema.pre('save', true, function (next, done, el) {
   // calling next kicks off the next middleware in parallel
-  debug('ok')
+  this.idsha = require('crypto')
+    .createHash('sha256')
+    .update(this.description + this.date)
+    .digest('hex')
+
+  debug(this)
   next()
   setTimeout(done, 100)
 })
