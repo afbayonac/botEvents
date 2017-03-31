@@ -6,8 +6,8 @@ var eventsSchema = new Schema({
   // Valida que el evento sea unico en en la base de dato generando un hast de
   // de los atributos de el eventos que lo representen como la fecha y la
   // description de el evento
-  idsha: {type: String, unique: true},
-  tittle: String,
+  hash: {type: String, unique: true},
+  title: String,
   date: Date,
   description: String,
   price: String,
@@ -15,7 +15,7 @@ var eventsSchema = new Schema({
   location: {
     geometry: {
       type: {type: String, default: 'Point'},
-      coordinates: []
+      coordinates: {type: [Number], index: '2dsphere'}
     },
     address: String,
     name: String
@@ -23,9 +23,11 @@ var eventsSchema = new Schema({
   url: String
 })
 
+// eventsSchema.index({'location.geometry': '2dsphere'})
+
 eventsSchema.pre('save', true, function (next, done, el) {
   // calling next kicks off the next middleware in parallel
-  this.idsha = require('crypto')
+  this.hash = require('crypto')
     .createHash('sha256')
     .update(this.description + this.date)
     .digest('hex')

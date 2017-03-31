@@ -10,7 +10,7 @@ var index = require('./routes/index')
 var app = express()
 
 // Conection mongodb
-mongoose.connect('mongodb://localhost/events')
+mongoose.connect('mongodb://localhost/events', { config: { autoIndex: false } })
 var mongodb = mongoose.connection
 mongodb.on('error', (e) => debug(`connection error : ${e}`))
 mongodb.once('open', () => debug('connection ok'))
