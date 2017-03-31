@@ -30,7 +30,7 @@ var scraped = (opt) => {
           .createHash('sha256')
           .update(el.description + el.startDate)
           .digest('hex'),
-          name: el.name,
+          title: el.name,
           description: el.description,
           date: el.startDate,
           location: {

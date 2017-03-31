@@ -8,5 +8,5 @@ router.get('/', function (req, res, next) {
 })
 
 router.post('/events', events.create)
-
+router.get('/events', events.getNear)
 module.exports = router
