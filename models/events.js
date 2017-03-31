@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 var debug = require('debug')('botevents:database')
 
 var eventsSchema = new Schema({
-  // Valida que el evento sea unico en en la base de dato generando un hast de
+  // Valida que el evento sea unico en en la base de dato generando un hash de
   // de los atributos de el eventos que lo representen como la fecha y la
   // description de el evento
   hash: {type: String, unique: true},
@@ -22,8 +22,6 @@ var eventsSchema = new Schema({
   },
   url: String
 })
-
-// eventsSchema.index({'location.geometry': '2dsphere'})
 
 eventsSchema.pre('save', true, function (next, done, el) {
   // calling next kicks off the next middleware in parallel

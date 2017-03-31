@@ -4,18 +4,26 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
 var debug = require('debug')('botevents:database')
+var cfg = require('./config/config')
 
 var index = require('./routes/index')
 
 var app = express()
 
 // Conection mongodb
-mongoose.connect('mongodb://localhost/events', { config: { autoIndex: false } })
+mongoose
+.connect(`mongodb://localhost:${cfg.db.mongo.port}/events`,
+  { config: { autoIndex: false } })
 var mongodb = mongoose.connection
-mongodb.on('error', (e) => debug(`connection error : ${e}`))
-mongodb.once('open', () => debug('connection ok'))
-// uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+mongodb.on('error', (e) => debug(
+  `connection error : ${e}`
+  ))
+mongodb.once('open', () => debug(
+  `Conection mongodb ok
+    port: ${cfg.db.mongo.port}
+  `))
+
+// config app express
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -34,7 +42,9 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
+  console.log(res.app.get('env'))
+  res.locals.error =
+    ['development', 'test'].indexOf(req.app.get('env')) !== -1 ? err : {}
 
   // render the error page
   res.status(err.status || 500)
