@@ -1,12 +1,14 @@
-var express = require('express')
-var logger = require('morgan')
-var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
-var mongoose = require('mongoose')
-var debug = require('debug')('botevents:database')
-var cfg = require('./config/config')
+const express = require('express')
+const logger = require('morgan')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const debug = require('debug')('botevents:database')
+const bot = require('./controllers/botTelegram')
+const cfg = require('./config/config')
 
-var index = require('./routes/index')
+// routes
+var index = require('./routes/route')
 
 var app = express()
 
@@ -30,6 +32,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 app.use('/', index)
+// route for a bot telegram
+app.post(`/${cfg.telegram.token}`, (req, res, next) => {
+  bot.processUpdate(req.body)
+  res.sendStatus(200)
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
