@@ -1,6 +1,6 @@
-var express = require('express')
-var events = require('../controllers/events')
-var router = express.Router()
+const express = require('express')
+const events = require('../controllers/events')
+const router = express.Router()
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
