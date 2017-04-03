@@ -7,7 +7,7 @@ var bot = new TelegramBot(cfg.telegram.token, {pulling: true})
 
 bot.setWebHook(`https://${cfg.telegram.url}/${cfg.telegram.token}`)
   .then((a) => {
-    if (a) debug(`setWebHook ${cfg.url}/`)
+    if (a) debug(`setWebHook ${cfg.telegram.url}`)
   })
 
 bot.onText(/^\/start(.*)/, (msg, match) => {
@@ -47,6 +47,7 @@ Para poder conenser los eventos que estan cerca nesesitamos tu localizacion
 })
 
 function sendEventshere (msg) {
+  debug(`location ${msg.location.longitude} ${msg.location.latitude}`)
   Events
     .find({
       'location.geometry.coordinates': {
@@ -85,7 +86,7 @@ ${rest}
 [${events[i].title}](${events[i].url})
 `
   }
-  return rest
+  return rest || 'no hay eventos cercanos'
 }
 
 // TODO modularizar el bot

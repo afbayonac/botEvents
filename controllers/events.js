@@ -38,7 +38,6 @@ exports.getNear = (req, res, next) => {
         debug(`err getNear: ${err}`)
         return res.status(500).json({mss: 'error in save'})
       }
-      console.log(data)
       return res.status(200).json(data)
     })
 }
