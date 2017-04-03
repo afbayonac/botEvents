@@ -3,6 +3,7 @@
 
 const request = require('request')
 const cheerio = require('cheerio')
+const cfg = require('../config/config')
 const $ = cheerio.load
 
 var scraped = (opt) => {
@@ -24,7 +25,7 @@ var scraped = (opt) => {
     .first()
     .text())
     .forEach((el) => {
-      request.post('http://localhost:3000/events', {
+      request.post(`http://localhost:${cfg.port}/events`, {
         json: {
           idsha: require('crypto')
           .createHash('sha256')
@@ -49,7 +50,7 @@ var scraped = (opt) => {
       })
     })
 
-    if (!$(body)('div .next').attr('class').split(' ')[1]) {
+    if ($(body)('div .next').attr('class') && !$(body)('div .next').attr('class').split(' ')[1]) {
       scraped({pages: page + 1})
     }
   })
